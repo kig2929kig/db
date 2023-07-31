@@ -1,0 +1,11 @@
+#로컬에서 접속 가능한 사용자 추가
+mysql> create user '사용자'@'localhost' identified by '비밀번호';
+
+#DB 권한 부여
+mysql> grant all privileges on db_name.* to '사용자'@'localhost';
+
+#시스템 적용
+mysql> flush privileges;
+
+#계정 삭제
+mysql> drop user '사용자'@'localhost';
