@@ -1,0 +1,8 @@
+#mysql 서버 시작
+/etc/init.d/mysql start
+
+#mysql 로그인
+mysql -u root -p
+
+#mysql 종료
+exit
