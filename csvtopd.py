@@ -14,19 +14,24 @@ def creatTable() :
     cur.execute(sql)
 
 def dropTable() :
-    sql = "drop table worldPopulation"
-    cur.execute(sql)
+    try :
+        sql = "drop table worldPopulation"
+        cur.execute(sql)
+    except Exception as e :
+        print(e)
 
-#creatTable()
-#dropTable()
-    
-data = zip(df['순번'], df['국가코드'], df['국가'], df['수도'], df['인구'])
-for no, code, country, city, population in data :
-    code = str(code); code = code[0:2]; code = code.upper()
-    #print(no, code, country, city, population)
-    sql = f'insert into worldPopulation values({no}, "{code}", "{country}", "{city}", {population})'
-    cur.execute(sql)
+def insertTable() :
+    data = zip(df['순번'], df['국가코드'], df['국가'], df['수도'], df['인구'])
+    for no, code, country, city, population in data :
+        code = str(code); code = code[0:2]; code = code.upper()
+        print(no, code, country, city, population)
+        sql = f'insert into worldPopulation values({no}, "{code}", "{country}", "{city}", {population})'
+        cur.execute(sql)
+    conn.commit()
 
-conn.commit()
+dropTable()
+creatTable()
+insertTable()
     
+
 
