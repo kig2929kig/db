@@ -4,6 +4,10 @@ from tkinter import *
 from connectDB import cur, conn
 from tkinter import messagebox
 
+current_page = 1
+total_page = 0
+pages = ""
+
 def showDB():
     cur.execute("select * from worldPopulation order by 순번 asc")
     for row in cur.fetchall() :
@@ -22,8 +26,15 @@ def showColumn():
     lbl5.grid(row=0, column=4)
 
 def showEntry() :
+    global total_page
+
     sql = "select * from worldPopulation order by 순번 asc"
     cur.execute(sql)
+    total_page = len(cur.fetchall())  
+
+    sql = "select * from worldPopulation order by 순번 asc"
+    cur.execute(sql)
+       
     for i in range(1, 11) :
         row = cur.fetchone()
         for j in range(5) :
@@ -36,8 +47,31 @@ def showEntry() :
             if j==3 : entry.configure(width=20)
             if j==4 : entry.configure(width=20)
             entry.insert(END, row[j])
-    
 
+def prev_page():
+    global current_page, total_page
+    current_page = current_page - 1
+    pages.set(str(current_page) + " / " + str(total_page))
+
+def next_page() :
+    global current_page, total_page
+    current_page = current_page + 1
+    pages.set(str(current_page) + " / " + str(total_page))
+
+def showBtn():
+    global pages
+    
+    prev_btn = Button(btnFrame, text ="<", command=prev_page)
+    prev_btn.pack(side=LEFT, padx=10)
+
+    pages = StringVar()
+    pages.set(str(current_page) + " / " + str(total_page))
+    page_state = Label(btnFrame, textvariable = pages)
+    page_state.pack(side = LEFT, padx=10)
+    
+    next_btn = Button(btnFrame, text = ">", command=next_page)
+    next_btn.pack(side=LEFT, padx=10)
+    
 root = Tk()
 root.title("세계 나라별 인구수 테이블")
 root.geometry("600x320")
@@ -45,8 +79,11 @@ root.geometry("600x320")
 columnFrame = Frame(root)
 columnFrame.pack()
 
+btnFrame = Frame(root)
+btnFrame.pack()
+
 showColumn()
 showEntry()
-
+showBtn()
 
 root.mainloop()
