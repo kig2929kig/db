@@ -22,9 +22,12 @@ def showColumn():
     lbl5.grid(row=0, column=4)
 
 def showEntry() :
+    sql = "select * from worldPopulation order by 순번 asc"
+    cur.execute(sql)
     for i in range(1, 11) :
+        row = cur.fetchone()
         for j in range(5) :
-            entry = Entry(columnFrame, text="love")
+            entry = Entry(columnFrame)
             entry.grid(row=i, column =j)
 
             if j==0 : entry.configure(width=5)
@@ -32,7 +35,7 @@ def showEntry() :
             if j==2 : entry.configure(width=20)
             if j==3 : entry.configure(width=20)
             if j==4 : entry.configure(width=20)
-            
+            entry.insert(END, row[j])
     
 
 root = Tk()
