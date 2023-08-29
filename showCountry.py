@@ -7,7 +7,13 @@ from tkinter import messagebox
 current_page = 1
 total_page = 0
 pages = ""
+btns = []
+entrys = []
 
+def updateRecord(no, code, country, city, population) :
+    #print(no, code, country, city, population)
+    print(entrys[no].get(), entrys[code].get(), entrys[country].get(), entrys[city].get(), entrys[population].get())
+    
 def showDB():
     cur.execute("select * from worldPopulation order by 순번 asc")
     for row in cur.fetchall() :
@@ -26,8 +32,9 @@ def showColumn():
     lbl5.grid(row=0, column=4)
 
 def showEntry() :
-    global total_page, current_page
-    
+    global total_page, current_page, btns, entrys
+    btns = []
+    entrys = []
     sql = "select * from worldPopulation order by 순번 asc"
     cur.execute(sql)
     total_page = len(cur.fetchall()) #레코드 수
@@ -44,7 +51,7 @@ def showEntry() :
         if (i <= 4): continue
         child.destroy()
     ############################################################
-   
+
     for i in range(1, 11) :
         row = cur.fetchone()
         for j in range(5) :
@@ -58,8 +65,27 @@ def showEntry() :
                 if j==2 : entry.configure(width=20)
                 if j==3 : entry.configure(width=20)
                 if j==4 : entry.configure(width=20)
-                entry.insert(END, row[j])    
-                    
+                entry.insert(END, row[j])
+                entrys.append(entry)
+        if row != None :
+            #print(no, code, country, city, population)
+            btn = Button(columnFrame, text="Edit")
+            btn.grid(row=i, column=5, padx=5)
+            btns.append(btn)
+    try :
+        btns[0].configure(command=lambda:updateRecord(0,1,2,3,4))
+        btns[1].configure(command=lambda:updateRecord(5,6,7,8,9))
+        btns[2].configure(command=lambda:updateRecord(10,11,12,13,14))
+        btns[3].configure(command=lambda:updateRecord(15,16,17,18,19))
+        btns[4].configure(command=lambda:updateRecord(20,21,22,23,24))
+        btns[5].configure(command=lambda:updateRecord(25,26,27,28,29))
+        btns[6].configure(command=lambda:updateRecord(30,31,32,33,34))
+        btns[7].configure(command=lambda:updateRecord(35,36,37,38,39))
+        btns[8].configure(command=lambda:updateRecord(40,41,42,43,44))
+        btns[9].configure(command=lambda:updateRecord(45,46,47,48,49))
+    except Exception as e :
+        print(e)
+    
 def prev_page():
     global current_page, total_page
     if current_page > 1 :
