@@ -6,8 +6,8 @@ except ImportError :
     os.system('pip install pymysql')
 
 try :
-    conn = pymysql.connect(host='43.201.16.58',
-                     port= 51942,
+    conn = pymysql.connect(host='13.124.160.231',
+                     port= 52583,
                      user='kig2929kig',
                      password='ansan',
                      db='com3100',
