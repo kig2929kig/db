@@ -27,29 +27,39 @@ def showColumn():
 
 def showEntry() :
     global total_page, current_page
-
+    
     sql = "select * from worldPopulation order by 순번 asc"
     cur.execute(sql)
     total_page = len(cur.fetchall()) #레코드 수
+    
     limit_page = 10
     total_page = round(total_page / limit_page) #총 페이지수
 
     sql = "select * from worldPopulation order by 순번 asc limit %s OFFSET %s"
     cur.execute(sql, (limit_page, (current_page-1) * limit_page))
+
+    # 기존 Entry 삭제 ##########################################
+    for (i, child) in enumerate(columnFrame.winfo_children()):
+        #print(i, child)
+        if (i <= 4): continue
+        child.destroy()
+    ############################################################
    
     for i in range(1, 11) :
         row = cur.fetchone()
         for j in range(5) :
-            entry = Entry(columnFrame)
-            entry.grid(row=i, column =j)
 
-            if j==0 : entry.configure(width=5)
-            if j==1 : entry.configure(width=10)
-            if j==2 : entry.configure(width=20)
-            if j==3 : entry.configure(width=20)
-            if j==4 : entry.configure(width=20)
-            entry.insert(END, row[j])
+            if row != None :
+                entry = Entry(columnFrame)
+                entry.grid(row=i, column =j)
 
+                if j==0 : entry.configure(width=5)
+                if j==1 : entry.configure(width=10)
+                if j==2 : entry.configure(width=20)
+                if j==3 : entry.configure(width=20)
+                if j==4 : entry.configure(width=20)
+                entry.insert(END, row[j])    
+                    
 def prev_page():
     global current_page, total_page
     if current_page > 1 :
