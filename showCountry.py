@@ -26,15 +26,17 @@ def showColumn():
     lbl5.grid(row=0, column=4)
 
 def showEntry() :
-    global total_page
+    global total_page, current_page
 
     sql = "select * from worldPopulation order by 순번 asc"
     cur.execute(sql)
-    total_page = len(cur.fetchall())  
+    total_page = len(cur.fetchall()) #레코드 수
+    limit_page = 10
+    total_page = round(total_page / limit_page) #총 페이지수
 
-    sql = "select * from worldPopulation order by 순번 asc"
-    cur.execute(sql)
-       
+    sql = "select * from worldPopulation order by 순번 asc limit %s OFFSET %s"
+    cur.execute(sql, (limit_page, (current_page-1) * limit_page))
+   
     for i in range(1, 11) :
         row = cur.fetchone()
         for j in range(5) :
@@ -50,13 +52,20 @@ def showEntry() :
 
 def prev_page():
     global current_page, total_page
-    current_page = current_page - 1
+    if current_page > 1 :
+        current_page = current_page - 1
+    
     pages.set(str(current_page) + " / " + str(total_page))
+    showEntry()
 
 def next_page() :
     global current_page, total_page
-    current_page = current_page + 1
+
+    if current_page < 20 : 
+        current_page = current_page + 1
+
     pages.set(str(current_page) + " / " + str(total_page))
+    showEntry()
 
 def showBtn():
     global pages
